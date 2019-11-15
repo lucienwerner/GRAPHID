@@ -1,4 +1,4 @@
-montecarlo = 1;
+montecarlo = 5;
 
 N=25; %number of nodes
 

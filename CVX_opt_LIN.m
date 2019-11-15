@@ -6,7 +6,7 @@ N = length(Y);
 idx = eye(N); %mask for entry-wise constraints
 
 cvx_begin quiet
-cvx_solver gurobi %mosek
+% cvx_solver gurobi %mosek
 variable x(N,N) complex 
 minimize(norm(x,1))
     subject to
