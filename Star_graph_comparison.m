@@ -1,4 +1,4 @@
-montecarlo = 10;
+montecarlo = 1000;
 
 N=25; %number of nodes
 
@@ -15,12 +15,8 @@ for m = 1:montecarlo
     for M=1:N
         % Get data (M samples)
         [Idata,Vdata,~] = simul_data(Y,M); 
-
         % Run algorithms
         [~,errors1(m,M,:),~] = CVX_opt_LIN(Idata,Vdata,Y); %only linear system
-        [~,errors2(m,M,:),~] = CVX_opt_SYM(Idata,Vdata,Y); %lin sys + symmetry
-%         [~,errors3(m,M,:),~] = CVX_opt_EW(Idata,Vdata,Y); %lin sys + entrywise
-%         [~,errors4(m,M,:),~] = CVX_opt(Idata,Vdata,Y); %everything
         fprintf('mc = %i, M= %i\n',m,M)
     end
 end
