@@ -1,4 +1,4 @@
-function [x,errors,time] = algorithm_v3(I,V,Y,N_sub,ew,lm1,lm2)
+function [x,errors,time] = algorithm_v3(I,V,Y,N_sub,ew,lm1,lm2,gamma)
     plotting = 0;
     %{
     This function ingests a list (of length M) of current and voltage meausements 
@@ -75,7 +75,7 @@ function [x,errors,time] = algorithm_v3(I,V,Y,N_sub,ew,lm1,lm2)
             V = V(idxs,:);
         end    
         
-        [Ytilde] = CSConstrained(I,V,ew); %entrywise constraints, need to set lm3 in scoring function to 0!
+        [Ytilde] = CSConstrained(I,V,ew,gamma); %entrywise constraints, need to set lm3 in scoring function to 0!
         
         if sum(isnan(Ytilde(:))) > 0
             time = Inf;
@@ -191,7 +191,7 @@ function [Ytilde] = CS(I,V)
     
 end %end CS() function
 
-function [Ytilde] = CSConstrained(I,V,ew)
+function [Ytilde] = CSConstrained(I,V,ew,gamma)
     %{
     This function runs compressed sensing on all the rows in the (potentially reduced) Ytilde matrix and gets an updated Ytilde
     
@@ -201,7 +201,7 @@ function [Ytilde] = CSConstrained(I,V,ew)
 
     [~,N] = size(V);
     Ytilde = zeros(N,N);
-    epsilon = 1e-4;
+    %gamma = 1e-4;
     for i = 1:N
         
         onehot = zeros(N,1);
@@ -216,7 +216,7 @@ function [Ytilde] = CSConstrained(I,V,ew)
             minimize(norm(x,1))
             subject to
                 %I(:,i) == V*x; %linear system
-                norm(I(:,i) - V*x,2) <= epsilon; %LS
+                norm(I(:,i) - V*x,2) <= gamma; %LS
                 if ew==1
                     real(x(~onehot)) <= 0;
                     imag(x(~onehot)) >= 0;
