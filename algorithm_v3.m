@@ -215,8 +215,8 @@ function [Ytilde] = CSConstrained(I,V,ew,gamma)
 %             minimize(0.5*power(2,norm(I(:,i) - V*x,2)) + 0.2*norm(x,1))
             minimize(norm(x,1))
             subject to
-                %I(:,i) == V*x; %linear system
-                norm(I(:,i) - V*x,2) <= gamma; %LS
+                I(:,i) == V*x; %linear system
+                %norm(I(:,i) - V*x,2) <= gamma; %LS
                 if ew==1
                     real(x(~onehot)) <= 0;
                     imag(x(~onehot)) >= 0;

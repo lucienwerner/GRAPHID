@@ -1,4 +1,4 @@
-montecarlo = 50; %# of montecarlo iterations
+montecarlo = 5; %# of montecarlo iterations
 
 xis = [0,1e-9,1e-7,1e-6,1e-5,1e-3,1e-2]; %error variance
 
@@ -18,7 +18,7 @@ for m = 1:montecarlo
 
             % Run algorithm
             %[~,urrs,~] = CVX_opt(Idata,Vdata,Y); %OPT
-            gamma = sqrt(N) * sqrt(xi);
+            gamma = sqrt(N) * sqrt(xis(xi));
             s = 2;
             Nsub = ceil(N/s); %use subset size of half
             [~,errors(m,M,xi,:),~] = algorithm_v3(Idata,Vdata,Y,Nsub,0,1,0,gamma); %OUR ALGORITHM
