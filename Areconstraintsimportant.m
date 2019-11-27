@@ -1,6 +1,10 @@
+<<<<<<< Updated upstream
 montecarlo = 10;
+=======
+montecarlo = 2;
+>>>>>>> Stashed changes
 
-N=25; %number of nodes
+N=10; %number of nodes
 
 errors1 = zeros(montecarlo,N,3);
 errors2 = zeros(montecarlo,N,3);

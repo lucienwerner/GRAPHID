@@ -12,7 +12,7 @@ Z_self = zeros(length(N),1); %purely complex-valued
 
 % pick both real and imag values uniformly in [-100,100] for all line and self
 % impedances, but set some equal to ~zero (1e-7)
-magnitude=100;
+magnitude=1;
 
 % pick a subset from N to have non-zero Z_self
 pzero = 0.1; %proportion of zeros

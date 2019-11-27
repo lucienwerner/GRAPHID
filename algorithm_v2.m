@@ -124,6 +124,7 @@ function [Ynew] = CS(Ytilde,I,V)
     %}
 
     %------------------
+<<<<<<< Updated upstream:algorithm_v2.m
     Ynew = Ytilde;
     N = length(Ynew);
  
@@ -142,6 +143,47 @@ function [Ynew] = CS(Ytilde,I,V)
             % store the row
             Ynew(i,:) = x.';  %cvx seems to output the conjugate of the correct numbers for some solutions?? 
         end
+=======
+    
+end %end CS() function
+
+function [Ytilde] = CSConstrained(I,V,ew)
+    %{
+    This function runs compressed sensing on all the rows in the (potentially reduced) Ytilde matrix and gets an updated Ytilde
+    
+    'ew' argument is a boolean to turn on/off the entrywise constraints in
+    the cvx problem
+    %}
+
+    [~,N] = size(V);
+    Ytilde = zeros(N,N);
+    epsilon = 0;
+    for i = 1:N
+        
+        onehot = zeros(N,1);
+        onehot(i) = 1;
+        onehot = logical(onehot); %onehot encoding of each column
+        
+        % compute a row of Ytilde using l1 minimization
+        cvx_begin quiet 
+            cvx_solver sedumi
+            variable x(N) complex
+%             minimize(0.5*power(2,norm(I(:,i) - V*x,2)) + 0.2*norm(x,1))
+            minimize(norm(x,1))
+            subject to
+                %I(:,i) == V*x; %linear system
+                norm(I(:,i) - V*x,2) <= epsilon; %LS
+                if ew==1
+                    real(x(~onehot)) <= 0;
+                    imag(x(~onehot)) >= 0;
+                    real(onehot) >= 0;
+                end
+        cvx_end
+
+        % store the row
+        Ytilde(i,:) = x.'; 
+    end
+>>>>>>> Stashed changes:algorithm_v3.m
     %------------------
     
 end %end CS() function
